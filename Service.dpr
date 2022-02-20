@@ -1,28 +1,15 @@
 program Service;
 
 uses
-  Vcl.SvcMgr,
-  Main in 'Main.pas' {Service1: TService};
+  Ctrl in 'Ctrl.pas',
+  Task in 'Task.pas',
+  VCL.SvcMgr;
 
 {$R *.RES}
 
 begin
-  // Windows 2003 Server requires StartServiceCtrlDispatcher to be
-  // called before CoRegisterClassObject, which can be called indirectly
-  // by Application.Initialize. TServiceApplication.DelayInitialize allows
-  // Application.Initialize to be called from TService.Main (after
-  // StartServiceCtrlDispatcher has been called).
-  //
-  // Delayed initialization of the Application object may affect
-  // events which then occur prior to initialization, such as
-  // TService.OnCreate. It is only recommended if the ServiceApplication
-  // registers a class object with OLE and is intended for use with
-  // Windows 2003 Server.
-  //
-  // Application.DelayInitialize := True;
-  //
   if not Application.DelayInitialize or Application.Installing then
     Application.Initialize;
-  Application.CreateForm(TService1, Service1);
+  Application.CreateForm(TDelphi_Service, Delphi_Service);
   Application.Run;
 end.
