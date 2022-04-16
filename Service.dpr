@@ -1,15 +1,32 @@
 program Service;
 
 uses
-  Ctrl in 'Ctrl.pas',
-  Task in 'Task.pas',
-  VCL.SvcMgr;
+  System.SysUtils,
+  VCL.Forms,
+  VCL.SvcMgr,
+  Back in 'Back.pas' {Sample},
+  Core in 'Core.pas',
+  Fore in 'Fore.pas' {$R *.RES};
 
 {$R *.RES}
 
 begin
-  if not Application.DelayInitialize or Application.Installing then
-    Application.Initialize;
-  Application.CreateForm(TDelphi_Service, Delphi_Service);
-  Application.Run;
+
+  if FindCmdLineSwitch('GUI', ['/'], True) then
+    begin
+      VCL.Forms.Application.Initialize;
+      VCL.Forms.Application.MainFormOnTaskbar := True;
+      VCL.Forms.Application.CreateForm(TFRM_Fore, FRM_Fore);
+  VCL.Forms.Application.Run;
+    end
+  else
+    begin
+      if not VCL.SvcMgr.Application.DelayInitialize or Vcl.SvcMgr.Application.Installing then
+        VCL.SvcMgr.Application.Initialize;
+      VCL.SvcMgr.Application.CreateForm(TSample, Sample);
+      VCL.SvcMgr.Application.CreateForm(TFRM_Fore, FRM_Fore);
+      VCL.SvcMgr.Application.Run;
+    end;
+
 end.
+
