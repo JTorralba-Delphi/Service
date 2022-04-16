@@ -4,9 +4,9 @@ uses
   System.SysUtils,
   VCL.Forms,
   VCL.SvcMgr,
-  Back in 'Back.pas' {Sample},
+  Back in 'Back.pas',
   Core in 'Core.pas',
-  Fore in 'Fore.pas' {$R *.RES};
+  Fore in 'Fore.pas';
 
 {$R *.RES}
 
@@ -23,8 +23,7 @@ begin
     begin
       if not VCL.SvcMgr.Application.DelayInitialize or Vcl.SvcMgr.Application.Installing then
         VCL.SvcMgr.Application.Initialize;
-      VCL.SvcMgr.Application.CreateForm(TSample, Sample);
-      VCL.SvcMgr.Application.CreateForm(TFRM_Fore, FRM_Fore);
+      VCL.SvcMgr.Application.CreateForm(TFRM_Back, FRM_Back);
       VCL.SvcMgr.Application.Run;
     end;
 

@@ -125,7 +125,9 @@
             <MainSource>MainSource</MainSource>
         </DelphiCompile>
         <DCCReference Include="Back.pas">
-            <Form>Sample</Form>
+            <Form>,
+  Core in &apos;Core.pas&apos;,
+  Fore in &apos;Fore.pas&apos; {$R *.RES</Form>
         </DCCReference>
         <DCCReference Include="Core.pas"/>
         <DCCReference Include="Fore.pas">

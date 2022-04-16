@@ -19,7 +19,7 @@ uses
   Core;
 
 type
-  TSample = class(TService)
+  TFRM_Back = class(TService)
     procedure Service_Execute(Sender: TService);
     procedure Service_Start(Sender: TService; var Started: Boolean);
     procedure Service_Stop(Sender: TService; var Stopped: Boolean);
@@ -35,21 +35,21 @@ end;
 {$R *.dfm}
 
 var
-  Sample: TSample;
+  FRM_Back: TFRM_Back;
 
 implementation
 
 procedure ServiceController(CtrlCode: DWord); stdcall;
 begin
-  Sample.Controller(CtrlCode);
+  FRM_Back.Controller(CtrlCode);
 end;
 
-function TSample.GetServiceController: TServiceController;
+function TFRM_Back.GetServiceController: TServiceController;
 begin
   Result := ServiceController;
 end;
 
-procedure TSample.Service_AfterInstall(Sender: TService);
+procedure TFRM_Back.Service_AfterInstall(Sender: TService);
 var
   Reg: TRegistry;
 begin
@@ -58,7 +58,7 @@ begin
     Reg.RootKey := HKEY_LOCAL_MACHINE;
     if Reg.OpenKey('\SYSTEM\CurrentControlSet\Services\' + name, false) then
       begin
-        Reg.WriteString('Description', 'Sample');
+        Reg.WriteString('Description', 'FRM_Back');
         Reg.CloseKey;
       end;
   finally
@@ -66,7 +66,7 @@ begin
   end;
 end;
 
-procedure TSample.Service_Execute(Sender: TService);
+procedure TFRM_Back.Service_Execute(Sender: TService);
 begin
   while not Terminated do
     begin
@@ -75,14 +75,14 @@ begin
     end;
 end;
 
-procedure TSample.Service_Start(Sender: TService; var Started: Boolean);
+procedure TFRM_Back.Service_Start(Sender: TService; var Started: Boolean);
 begin
   THR_Back := THR_Core.Create(True);
   THR_Back.Start;
   Started := True;
 end;
 
-procedure TSample.Service_Stop(Sender: TService; var Stopped: Boolean);
+procedure TFRM_Back.Service_Stop(Sender: TService; var Stopped: Boolean);
 begin
   THR_Back.Terminate;
   THR_Back.WaitFor;
@@ -90,13 +90,13 @@ begin
   Stopped := True;
 end;
 
-procedure TSample.Service_Pause(Sender: TService; var Paused: Boolean);
+procedure TFRM_Back.Service_Pause(Sender: TService; var Paused: Boolean);
 begin
   THR_Back.Pause;
   Paused := True;
 end;
 
-procedure TSample.Service_Resume(Sender: TService; var Resumed: Boolean);
+procedure TFRM_Back.Service_Resume(Sender: TService; var Resumed: Boolean);
 begin
   THR_Back.Resume;
   Resumed := True;

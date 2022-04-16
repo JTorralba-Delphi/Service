@@ -1,6 +1,6 @@
-object Sample: TSample
+object FRM_Back: TFRM_Back
   OldCreateOrder = False
-  DisplayName = 'Sample'
+  DisplayName = 'FRM_Back'
   AfterInstall = Service_AfterInstall
   OnContinue = Service_Resume
   OnExecute = Service_Execute

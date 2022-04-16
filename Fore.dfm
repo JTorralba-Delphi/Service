@@ -2,7 +2,7 @@ object FRM_Fore: TFRM_Fore
   Left = 0
   Top = 0
   BorderIcons = [biSystemMenu]
-  Caption = 'Core Diagnostics'
+  Caption = 'FRM_Fore'
   ClientHeight = 179
   ClientWidth = 302
   Color = clBtnFace
