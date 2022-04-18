@@ -16,6 +16,7 @@ object FRM_Fore: TFRM_Fore
   Font.Name = 'Tahoma'
   Font.Style = []
   OldCreateOrder = False
+  OnActivate = BTN_StartClick
   OnDestroy = FormDestroy
   PixelsPerInch = 96
   TextHeight = 13

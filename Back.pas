@@ -26,6 +26,7 @@ type
     procedure Service_Pause(Sender: TService; var Paused: Boolean);
     procedure Service_Resume(Sender: TService; var Resumed: Boolean);
     procedure Service_AfterInstall(Sender: TService);
+    procedure Service_BeforeUninstall(Sender: TService);
   private
     THR_Back: THR_Core;
   public
@@ -64,6 +65,12 @@ begin
   finally
     Reg.Free;
   end;
+  WinExec('cmd.exe /c net start FRM_Back',sw_hide);
+end;
+
+procedure TFRM_Back.Service_BeforeUninstall(Sender: TService);
+begin
+  WinExec('cmd.exe /c net stop FRM_Back',sw_hide);
 end;
 
 procedure TFRM_Back.Service_Execute(Sender: TService);
