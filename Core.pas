@@ -31,8 +31,7 @@ begin
     Paused := False;
 
     File_Path := TPath.GetDirectoryName(GetModuleName(HInstance));
-//  File_Name := TPath.Combine(File_Path, ClassName + '_' + IntToStr(CurrentThread.ThreadID) + '.log');
-    File_Name := TPath.Combine(File_Path, 'Core_' + IntToStr(CurrentThread.ThreadID) + '.log');
+    File_Name := TPath.Combine(File_Path, ClassName + '_' + IntToStr(CurrentThread.ThreadID) + '.log');
     File_Node := TStreamWriter.Create(TFileStream.Create(File_Name, fmCreate or fmShareDenyWrite));
 
     try
@@ -51,8 +50,7 @@ begin
     except
       on E: Exception do
         begin
-//        TFile.WriteAllText(TPath.Combine(File_Path, ExtractFileName(ParamStr(0)) + '.dbg'), E.ClassName + ' ' + E.Message);
-          TFile.WriteAllText(TPath.Combine(File_Path, 'Core.dbg'), E.Message);
+          TFile.WriteAllText(TPath.Combine(File_Path, ExtractFileName(ParamStr(0)) + '.err'), E.ClassName + ' ' + E.Message);
         end
   end;
 end;

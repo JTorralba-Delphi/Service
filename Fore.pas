@@ -5,6 +5,7 @@ interface
 uses
 
   System.Classes,
+  System.IOUtils,
   System.SysUtils,
   System.Variants,
 
@@ -33,6 +34,7 @@ type
     procedure BTN_StopClick(Sender: TObject);
     procedure BTN_PauseClick(Sender: TObject);
     procedure BTN_ResumeClick(Sender: TObject);
+    procedure ShowParameter;
   private
     THR_Fore: THR_Core;
   public
@@ -65,6 +67,7 @@ end;
 
 procedure TFRM_Fore.BTN_StartClick(Sender: TObject);
 begin
+  ShowParameter;
   THR_Fore := THR_Core.Create(True);
   THR_Fore.Start;
 end;
@@ -84,6 +87,39 @@ end;
 procedure TFRM_Fore.BTN_ResumeClick(Sender: TObject);
 begin
   THR_Fore.Resume;
+end;
+
+procedure TFRM_Fore.ShowParameter;
+var
+  File_Path: string;
+  File_Name: string;
+  File_Node: TStreamWriter;
+
+  I: integer;
+
+begin
+  try
+    File_Path := TPath.GetDirectoryName(GetModuleName(HInstance));
+    File_Name := TPath.Combine(File_Path, 'Service' + '.dbg');
+    File_Node := TStreamWriter.Create(TFileStream.Create(File_Name, fmCreate or fmShareDenyWrite));
+    try
+      for I := 0 to ParamCount do
+        begin
+          if I <> 0 then
+            begin
+              File_Node.WriteLine(ParamStr(I));
+            end;
+        end;
+    finally
+      File_Node.Free;
+    end;
+
+    except
+      on E: Exception do
+        begin
+          TFile.WriteAllText(TPath.Combine(File_Path, ExtractFileName(ParamStr(0)) + '.err'), E.ClassName + ' ' + E.Message);
+        end
+  end;
 end;
 
 end.

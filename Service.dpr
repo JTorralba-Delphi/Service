@@ -2,8 +2,10 @@ program Service;
 
 uses
   System.SysUtils,
+
   VCL.Forms,
   VCL.SvcMgr,
+
   Back in 'Back.pas',
   Core in 'Core.pas',
   Fore in 'Fore.pas';
