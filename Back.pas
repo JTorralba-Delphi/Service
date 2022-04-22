@@ -3,7 +3,6 @@ unit Back;
 interface
 
 uses
-
   System.Classes,
   System.SysUtils,
   System.Win.Registry,
@@ -57,7 +56,7 @@ begin
   Reg := TRegistry.Create(KEY_READ or KEY_WRITE);
   try
     Reg.RootKey := HKEY_LOCAL_MACHINE;
-    if Reg.OpenKey('\SYSTEM\CurrentControlSet\Services\' + name, false) then
+    if Reg.OpenKey('\SYSTEM\CurrentControlSet\Services\' + Name, false) then
       begin
         Reg.WriteString('Description', 'FRM_Back');
         Reg.CloseKey;
@@ -65,12 +64,12 @@ begin
   finally
     Reg.Free;
   end;
-  WinExec('cmd.exe /c net start FRM_Back',sw_hide);
+  WinExec('CMD.exe /c net start FRM_Back',sw_hide);
 end;
 
 procedure TFRM_Back.Service_BeforeUninstall(Sender: TService);
 begin
-  WinExec('cmd.exe /c net stop FRM_Back',sw_hide);
+  WinExec('CMD.exe /c net stop FRM_Back',sw_hide);
 end;
 
 procedure TFRM_Back.Service_Execute(Sender: TService);

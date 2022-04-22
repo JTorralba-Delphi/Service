@@ -4,7 +4,7 @@ interface
 
 uses
   System.Classes,
-  System.ioutils,
+  System.IOUtils,
   System.SysUtils;
 
 type
@@ -50,6 +50,7 @@ begin
     except
       on E: Exception do
         begin
+          File_Node.Close;
           TFile.WriteAllText(TPath.Combine(File_Path, ExtractFileName(ParamStr(0)) + '.err'), E.ClassName + ' ' + E.Message);
         end
   end;
