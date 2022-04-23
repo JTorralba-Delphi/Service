@@ -3,6 +3,7 @@ unit Core;
 interface
 
 uses
+
   System.Classes,
   System.IOUtils,
   System.SysUtils;
@@ -23,13 +24,12 @@ implementation
 
 procedure THR_Core.Execute;
 var
-  File_Path: string;
-  File_Name: string;
+  File_Path: String;
+  File_Name: String;
   File_Node: TStreamWriter;
 begin
   try
     Paused := False;
-
     File_Path := TPath.GetDirectoryName(GetModuleName(HInstance));
     File_Name := TPath.Combine(File_Path, ClassName + '_' + IntToStr(CurrentThread.ThreadID) + '.log');
     File_Node := TStreamWriter.Create(TFileStream.Create(File_Name, fmCreate or fmShareDenyWrite));
@@ -46,7 +46,6 @@ begin
     finally
       File_Node.Free;
     end;
-
     except
       on E: Exception do
         begin

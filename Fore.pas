@@ -70,8 +70,8 @@ end;
 
 procedure TFRM_Fore.BTN_StopClick(Sender: TObject);
 begin
-  BTN_Pause.Enabled := false;
-  BTN_Resume.Enabled := false;
+  BTN_Pause.Enabled := False;
+  BTN_Resume.Enabled := False;
   THR_Fore.Terminate;
   THR_Fore.WaitFor;
   FreeAndNil(THR_Fore);
