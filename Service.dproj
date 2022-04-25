@@ -125,15 +125,11 @@
             <MainSource>MainSource</MainSource>
         </DelphiCompile>
         <DCCReference Include="Back.pas">
-            <Form>Core in &apos;Core.pas&apos;,
-  Fore in &apos;Fore.pas&apos; {$R *.RES</Form>
+            <Form>Delphi</Form>
         </DCCReference>
         <DCCReference Include="Core.pas"/>
         <DCCReference Include="Fore.pas">
-            <Form>,
-  Base in &apos;Base.pas&apos;;
-
-{$R *.RES</Form>
+            <Form>Delphi_GUI</Form>
         </DCCReference>
         <DCCReference Include="Base.pas"/>
         <BuildConfiguration Include="Release">

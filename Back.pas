@@ -18,7 +18,7 @@ uses
   Core;
 
 type
-  TFRM_Back = class(TService)
+  TDelphi = class(TService)
     procedure Service_Execute(Sender: TService);
     procedure Service_Start(Sender: TService; var Started: Boolean);
     procedure Service_Stop(Sender: TService; var Stopped: Boolean);
@@ -35,21 +35,21 @@ end;
 {$R *.dfm}
 
 var
-  FRM_Back: TFRM_Back;
+  Delphi: TDelphi;
 
 implementation
 
 procedure ServiceController(CtrlCode: DWord); StdCall;
 begin
-  FRM_Back.Controller(CtrlCode);
+  Delphi.Controller(CtrlCode);
 end;
 
-function TFRM_Back.GetServiceController: TServiceController;
+function TDelphi.GetServiceController: TServiceController;
 begin
   Result := ServiceController;
 end;
 
-procedure TFRM_Back.Service_AfterInstall(Sender: TService);
+procedure TDelphi.Service_AfterInstall(Sender: TService);
 var
   Reg: TRegistry;
 begin
@@ -58,21 +58,21 @@ begin
     Reg.RootKey := HKEY_LOCAL_MACHINE;
     if Reg.OpenKey('\SYSTEM\CurrentControlSet\Services\' + Name, False) then
       begin
-        Reg.WriteString('Description', 'FRM_Back');
+        Reg.WriteString('Description', Delphi.Name);
         Reg.CloseKey;
       end;
   finally
     Reg.Free;
   end;
-  WinExec('CMD.exe /c net start FRM_Back', SW_Hide);
+  WinExec('CMD.exe /c net start Delphi', SW_Hide);
 end;
 
-procedure TFRM_Back.Service_BeforeUninstall(Sender: TService);
+procedure TDelphi.Service_BeforeUninstall(Sender: TService);
 begin
-  WinExec('CMD.exe /c net stop FRM_Back', SW_Hide);
+  WinExec('CMD.exe /c net stop Delphi', SW_Hide);
 end;
 
-procedure TFRM_Back.Service_Execute(Sender: TService);
+procedure TDelphi.Service_Execute(Sender: TService);
 begin
   while not Terminated do
     begin
@@ -81,14 +81,14 @@ begin
     end;
 end;
 
-procedure TFRM_Back.Service_Start(Sender: TService; var Started: Boolean);
+procedure TDelphi.Service_Start(Sender: TService; var Started: Boolean);
 begin
   THR_Back := THR_Core.Create(True);
   THR_Back.Start;
   Started := True;
 end;
 
-procedure TFRM_Back.Service_Stop(Sender: TService; var Stopped: Boolean);
+procedure TDelphi.Service_Stop(Sender: TService; var Stopped: Boolean);
 begin
   THR_Back.Terminate;
   THR_Back.WaitFor;
@@ -96,13 +96,13 @@ begin
   Stopped := True;
 end;
 
-procedure TFRM_Back.Service_Pause(Sender: TService; var Paused: Boolean);
+procedure TDelphi.Service_Pause(Sender: TService; var Paused: Boolean);
 begin
   THR_Back.Pause;
   Paused := True;
 end;
 
-procedure TFRM_Back.Service_Resume(Sender: TService; var Resumed: Boolean);
+procedure TDelphi.Service_Resume(Sender: TService; var Resumed: Boolean);
 begin
   THR_Back.Resume;
   Resumed := True;

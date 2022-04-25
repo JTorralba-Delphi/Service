@@ -1,8 +1,8 @@
-object FRM_Fore: TFRM_Fore
+object Delphi_GUI: TDelphi_GUI
   Left = 0
   Top = 0
   BorderIcons = [biSystemMenu]
-  Caption = 'FRM_Fore'
+  Caption = 'Delphi'
   ClientHeight = 179
   ClientWidth = 302
   Color = clBtnFace

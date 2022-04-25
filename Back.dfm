@@ -1,6 +1,6 @@
-object FRM_Back: TFRM_Back
+object Delphi: TDelphi
   OldCreateOrder = False
-  DisplayName = 'FRM_Back'
+  DisplayName = 'Delphi'
   AfterInstall = Service_AfterInstall
   BeforeUninstall = Service_BeforeUninstall
   OnContinue = Service_Resume

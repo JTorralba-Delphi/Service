@@ -2,13 +2,11 @@ program Service;
 
 uses
   System.SysUtils,
-
   VCL.Forms,
   VCL.SvcMgr,
-
-  Back in 'Back.pas',
+  Back in 'Back.pas' {Delphi},
   Core in 'Core.pas',
-  Fore in 'Fore.pas',
+  Fore in 'Fore.pas' {Delphi_GUI},
   Base in 'Base.pas';
 
 {$R *.RES}
@@ -18,13 +16,13 @@ begin
     begin
       VCL.Forms.Application.Initialize;
       VCL.Forms.Application.MainFormOnTaskbar := True;
-      VCL.Forms.Application.CreateForm(TFRM_Fore, FRM_Fore);
-      VCL.Forms.Application.Run;
+      VCL.Forms.Application.CreateForm(TDelphi_GUI, Delphi_GUI);
+  VCL.Forms.Application.Run;
     end
   else
     begin
       if not VCL.SvcMgr.Application.DelayInitialize or VCL.SvcMgr.Application.Installing then VCL.SvcMgr.Application.Initialize;
-      VCL.SvcMgr.Application.CreateForm(TFRM_Back, FRM_Back);
+      VCL.SvcMgr.Application.CreateForm(TDelphi, Delphi);
       VCL.SvcMgr.Application.Run;
     end;
   Parameters;
