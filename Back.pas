@@ -3,7 +3,6 @@ unit Back;
 interface
 
 uses
-
   System.Classes,
   System.SysUtils,
   System.Win.Registry,

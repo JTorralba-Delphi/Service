@@ -1,45 +1,58 @@
 unit Base;
 
 interface
+  procedure Log(Node: String; Text: String);
   procedure Parameters;
 
 implementation
 
 uses
-
   System.Classes,
   System.IOUtils,
   System.SysUtils;
 
-procedure Parameters;
+procedure Log(Node: String; Text: String);
 var
-  File_Path: String;
-  File_Name: String;
-  File_Node: TStreamWriter;
-  I: Integer;
+  FilePath: String;
+  FileName: String;
+  FileNode: TStreamWriter;
 begin
+  FilePath := TPath.GetDirectoryName(GetModuleName(HInstance));
+  FileName := TPath.Combine(FilePath, Node + '.log');
+  FileNode := TStreamWriter.Create(FileName, True, TEncoding.UTF8);
   try
-    File_Path := TPath.GetDirectoryName(GetModuleName(HInstance));
-    File_Name := TPath.Combine(File_Path, 'Parameters.dbg');
-    File_Node := TStreamWriter.Create(TFileStream.Create(File_Name, fmCreate or fmShareDenyWrite));
     try
-      for I := 0 to ParamCount do
-        begin
-          if I <> 0 then
-            begin
-              File_Node.WriteLine(UpperCase(ParamStr(I)));
-            end;
-        end;
+      FileNode.WriteLine(FormatDateTime('yyyy-mm-dd hh:nn:ss.zzz', Now) + ' ' + Text);
     finally
-      File_Node.Free;
+      FileNode.Free;
     end;
     except
       on E: Exception do
         begin
-          File_Node.Close;
-          TFile.WriteAllText(TPath.Combine(File_Path, 'Parameters.err'), E.ClassName + ' ' + E.Message);
+          Log('Exception', E.ClassName + ' ' + E.Message);
+        end
+  end;
+end;
+
+procedure Parameters;
+var
+  I: Integer;
+begin
+  try
+    try
+      for I := 0 to ParamCount do
+        begin
+              Log('Parameters', UpperCase(ParamStr(I)));
+        end;
+    finally
+    end;
+    except
+      on E: Exception do
+        begin
+          Log('Exception', E.ClassName + ' ' + E.Message);
         end
   end;
 end;
 
 end.
+

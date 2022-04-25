@@ -1,7 +1,6 @@
 program Service;
 
 uses
-
   System.SysUtils,
 
   VCL.Forms,
@@ -15,7 +14,6 @@ uses
 {$R *.RES}
 
 begin
-
   if FindCmdLineSwitch('GUI', ['/'], True) then
     begin
       VCL.Forms.Application.Initialize;
@@ -29,7 +27,6 @@ begin
       VCL.SvcMgr.Application.CreateForm(TFRM_Back, FRM_Back);
       VCL.SvcMgr.Application.Run;
     end;
-
   Parameters;
-
 end.
+
