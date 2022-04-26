@@ -2,12 +2,14 @@ program Service;
 
 uses
   System.SysUtils,
+
   VCL.Forms,
   VCL.SvcMgr,
-  Back in 'Back.pas' {Delphi},
+
+  Base in 'Base.pas',
+  Back in 'Back.pas',
   Core in 'Core.pas',
-  Fore in 'Fore.pas' {Delphi_GUI},
-  Base in 'Base.pas';
+  Fore in 'Fore.pas';
 
 {$R *.RES}
 
@@ -23,8 +25,8 @@ begin
     begin
       if not VCL.SvcMgr.Application.DelayInitialize or VCL.SvcMgr.Application.Installing then VCL.SvcMgr.Application.Initialize;
       VCL.SvcMgr.Application.CreateForm(TDelphi, Delphi);
+      Delphi.ImagePath := GetImagePath;
       VCL.SvcMgr.Application.Run;
     end;
-  Parameters;
 end.
 

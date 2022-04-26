@@ -29,6 +29,7 @@ type
   private
     THR_Back: THR_Core;
   public
+    ImagePath: String;
     function GetServiceController: TServiceController; override;
 end;
 
@@ -59,6 +60,7 @@ begin
     if Reg.OpenKey('\SYSTEM\CurrentControlSet\Services\' + Name, False) then
       begin
         Reg.WriteString('Description', Delphi.Name);
+        Reg.WriteExpandString('ImagePath', ImagePath);
         Reg.CloseKey;
       end;
   finally

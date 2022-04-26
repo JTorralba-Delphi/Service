@@ -2,7 +2,8 @@ unit Base;
 
 interface
   procedure Log(Node: String; Text: String);
-  procedure Parameters;
+  procedure GetParameters();
+  function GetImagePath(): String;
 
 implementation
 
@@ -29,12 +30,12 @@ begin
     except
       on E: Exception do
         begin
-          Log('Exception', E.ClassName + ' ' + E.Message);
+          Log('Exception_Log', E.ClassName + ' ' + E.Message);
         end
   end;
 end;
 
-procedure Parameters;
+procedure GetParameters();
 var
   I: Integer;
 begin
@@ -42,16 +43,39 @@ begin
     try
       for I := 0 to ParamCount do
         begin
-              Log('Parameters', UpperCase(ParamStr(I)));
+          Log('GetParameters', I.ToString + ' ' + UpperCase(ParamStr(I)));
         end;
     finally
     end;
     except
       on E: Exception do
         begin
-          Log('Exception', E.ClassName + ' ' + E.Message);
+          Log('Exception_Parameters', E.ClassName + ' ' + E.Message);
         end
   end;
+end;
+
+function GetImagePath(): String;
+var
+  I: Integer;
+  X: String;
+begin
+  try
+    try
+      for I := 0 to ParamCount do
+        begin
+          if (UpperCase(ParamStr(I)) <> '/GUI') and (UpperCase(ParamStr(I)) <> '/INSTALL') and (UpperCase(ParamStr(I)) <> '/S') and (UpperCase(ParamStr(I)) <> '/UNINSTALL') then
+            X := Trim(X + ' ' + ParamStr(I));
+        end;
+    finally
+    end;
+    except
+      on E: Exception do
+        begin
+          Log('Exception_GetImagePath', E.ClassName + ' ' + E.Message);
+        end
+  end;
+  Result := X;
 end;
 
 end.

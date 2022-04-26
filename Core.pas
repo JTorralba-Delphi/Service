@@ -24,6 +24,7 @@ implementation
 
 procedure THR_Core.Execute;
 begin
+  GetParameters();
   try
     Paused := False;
     try
@@ -40,7 +41,7 @@ begin
     except
       on E: Exception do
         begin
-          Log('Exception', E.ClassName + ' ' + E.Message);
+          Log('Exception_Core', E.ClassName + ' ' + E.Message);
         end
   end;
 end;
