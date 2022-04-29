@@ -7,12 +7,8 @@ uses
   System.SysUtils,
   System.Win.Registry,
 
-  WinAPI.Messages,
   WinAPI.Windows,
 
-  VCL.Controls,
-  VCL.Dialogs,
-  VCL.Graphics,
   VCL.SvcMgr,
 
   Core;
