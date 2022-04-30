@@ -19,7 +19,7 @@ begin
       VCL.Forms.Application.Initialize;
       VCL.Forms.Application.MainFormOnTaskbar := True;
       VCL.Forms.Application.CreateForm(TDelphi_GUI, Delphi_GUI);
-  VCL.Forms.Application.Run;
+      VCL.Forms.Application.Run;
     end
   else
     begin

@@ -3,14 +3,15 @@ unit Fore;
 interface
 
 uses
+  System.Classes,
   System.SysUtils,
 
   VCL.AppEvnts,
+  VCL.Controls,
   VCL.Forms,
-  VCL.Graphics,
   VCL.StdCtrls,
 
-  Core, System.Classes, Vcl.Controls;
+  Core;
 
 type
   TDelphi_GUI = class(TForm)
