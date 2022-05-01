@@ -12,6 +12,7 @@ type
   THR_Core = class(TThread)
   private
     Paused: Boolean;
+    MS: Integer;
   protected
     procedure Execute; override;
   public
@@ -24,9 +25,12 @@ implementation
 
 procedure THR_Core.Execute;
 begin
-  GetParameters();
   try
     Paused := False;
+
+    if GetParameterValue('/MS') <> '' then MS := GetParameterValue('/MS').ToInteger;
+    if MS = 0 then MS := 1000;
+
     try
       while not Terminated do
         begin
@@ -34,7 +38,7 @@ begin
             begin
               Log('Core', FormatDateTime('yyyy-mm-dd hh:nn:ss.zzz', Now));
             end;
-          TThread.Sleep(1000);
+          TThread.Sleep(MS);
         end;
     finally
     end;

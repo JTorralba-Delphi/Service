@@ -3,6 +3,7 @@ unit Base;
 interface
   procedure Log(Node: String; Text: String);
   procedure GetParameters();
+  function GetParameterValue(Parameter: String): String;
   function GetImagePath(): String;
 
 implementation
@@ -10,7 +11,9 @@ implementation
 uses
   System.Classes,
   System.IOUtils,
-  System.SysUtils;
+  System.SysUtils,
+
+  IDStrings;
 
 procedure Log(Node: String; Text: String);
 var
@@ -51,6 +54,29 @@ begin
       on E: Exception do
         begin
           Log('Exception_GetParameters', E.ClassName + ' ' + E.Message);
+        end
+  end;
+end;
+
+function GetParameterValue(Parameter: String): String;
+var
+  I: Integer;
+  Key: String;
+  Value: String;
+begin
+  try
+    try
+      for I := 0 to ParamCount do
+        begin
+          IDStrings.SplitString(UpperCase(ParamStr(I)), '=', Key, Value);
+          if Parameter = Key then Result := Value;
+        end;
+    finally
+    end;
+    except
+      on E: Exception do
+        begin
+          Log('Exception_GetParameterValue', E.ClassName + ' ' + E.Message);
         end
   end;
 end;
