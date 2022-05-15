@@ -7,8 +7,8 @@ uses
   VCL.Forms,
   VCL.SvcMgr,
 
-  Base in 'Base.pas',
   Back in 'Back.pas',
+  Base in 'Base.pas',
   Core in 'Core.pas',
   Fore in 'Fore.pas';
 

@@ -124,8 +124,8 @@
         <DelphiCompile Include="$(MainSource)">
             <MainSource>MainSource</MainSource>
         </DelphiCompile>
-        <DCCReference Include="Base.pas"/>
         <DCCReference Include="Back.pas"/>
+        <DCCReference Include="Base.pas"/>
         <DCCReference Include="Core.pas"/>
         <DCCReference Include="Fore.pas"/>
         <BuildConfiguration Include="Release">
