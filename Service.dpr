@@ -22,16 +22,12 @@ begin
       VCL.Forms.Application.CreateForm(TDelphi_GUI, Delphi_GUI);
       VCL.Forms.Application.Run;
     end
-  else if FindCmdLineSwitch('INSTALL', ['/'], True) or FindCmdLineSwitch('UNINSTALL', ['/'], True) then
+  else
     begin
       if not VCL.SvcMgr.Application.DelayInitialize or VCL.SvcMgr.Application.Installing then VCL.SvcMgr.Application.Initialize;
       VCL.SvcMgr.Application.CreateForm(TDelphi, Delphi);
       Delphi.ImagePath := GetImagePath;
       VCL.SvcMgr.Application.Run;
-    end
-    else
-    begin
-      Log('Service', 'Invalid argument(s).');
     end;
 end.
 
