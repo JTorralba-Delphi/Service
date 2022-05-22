@@ -5,7 +5,7 @@ Background service implementation.
 
 ## Stack:
 
-Windows 10 Professional LTSC\
+Windows 11 Enterprise\
 RAD Studio CE\
 Delphi 10.4
 
