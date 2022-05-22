@@ -2,7 +2,7 @@ unit Base;
 
 interface
   procedure Log(Node: String; Text: String);
-  procedure GetParameters();
+  procedure LogParameters();
   function GetParameterValue(Parameter: String): String;
   function GetImagePath(): String;
 
@@ -38,22 +38,23 @@ begin
   end;
 end;
 
-procedure GetParameters();
+procedure LogParameters();
 var
   I: Integer;
 begin
   try
     try
+      Log('Parameters', StringReplace(UpperCase(CMDLine), '  ', ' ', [RFReplaceAll, RFIgnoreCase]));
       for I := 0 to ParamCount do
         begin
-          Log('GetParameters', I.ToString + ' ' + UpperCase(ParamStr(I)));
+          Log('Parameters', I.ToString + ' ' + UpperCase(ParamStr(I)));
         end;
     finally
     end;
     except
       on E: Exception do
         begin
-          Log('Exception_GetParameters', E.ClassName + ' ' + E.Message);
+          Log('Exception_LogParameters', E.ClassName + ' ' + E.Message);
         end
   end;
 end;

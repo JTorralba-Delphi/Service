@@ -25,6 +25,7 @@ implementation
 
 procedure THR_Core.Execute;
 begin
+  LogParameters;
   try
     Paused := False;
 
