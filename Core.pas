@@ -37,7 +37,14 @@ begin
         begin
           if not Paused then
             begin
-              Log('Core', FormatDateTime('yyyy-mm-dd hh:nn:ss.zzz', Now));
+              if FindCmdLineSwitch('GUI', ['/'], True) then
+                begin
+                  Log('GUI', FormatDateTime('yyyy-mm-dd hh:nn:ss.zzz', Now));
+                end
+              else
+                begin
+                  Log('Core', FormatDateTime('yyyy-mm-dd hh:nn:ss.zzz', Now));
+                end
             end;
           TThread.Sleep(MS);
         end;
