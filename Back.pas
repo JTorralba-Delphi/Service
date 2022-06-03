@@ -49,6 +49,7 @@ end;
 procedure TDelphi.Service_AfterInstall(Sender: TService);
 var
   Reg: TRegistry;
+  CMD : ANSIString;
 begin
   Reg := TRegistry.Create(KEY_READ or KEY_WRITE);
   try
@@ -62,12 +63,16 @@ begin
   finally
     Reg.Free;
   end;
-  WinExec('CMD.exe /c net start Delphi', SW_Hide);
+  CMD := 'CMD.exe /c net start ' + Delphi.Name;
+  WinExec(@CMD[1], SW_Hide);
 end;
 
 procedure TDelphi.Service_BeforeUninstall(Sender: TService);
+var
+  CMD : ANSIString;
 begin
-  WinExec('CMD.exe /c net stop Delphi', SW_Hide);
+  CMD :=  'CMD.exe /c net stop ' + Delphi.Name;
+  WinExec(@CMD[1], SW_Hide);
 end;
 
 procedure TDelphi.Service_Execute(Sender: TService);
