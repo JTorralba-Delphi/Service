@@ -9,11 +9,10 @@ interface
 implementation
 
 uses
+  IDStrings,
   System.Classes,
   System.IOUtils,
-  System.SysUtils,
-
-  IDStrings;
+  System.SysUtils;
 
 procedure Log(Node: String; Text: String);
 var
@@ -21,9 +20,9 @@ var
   FileName: String;
   FileNode: TStreamWriter;
 begin
-  FilePath := TPath.GetDirectoryName(GetModuleName(HInstance));
-  FileName := TPath.Combine(FilePath, Node + '.log');
-  FileNode := TStreamWriter.Create(FileName, True, TEncoding.UTF8);
+  FilePath:= TPath.GetDirectoryName(GetModuleName(HInstance));
+  FileName:= TPath.Combine(FilePath, Node + '.log');
+  FileNode:= TStreamWriter.Create(FileName, True, TEncoding.UTF8);
   try
     try
       FileNode.WriteLine(FormatDateTime('yyyy-mm-dd hh:nn:ss.zzz', Now) + ' ' + Text);
@@ -45,7 +44,7 @@ begin
   try
     try
       Log('Parameters', StringReplace(UpperCase(CMDLine), '  ', ' ', [RFReplaceAll, RFIgnoreCase]));
-      for I := 0 to ParamCount do
+      for I:= 0 to ParamCount do
         begin
           Log('Parameters', I.ToString + ' ' + UpperCase(ParamStr(I)));
         end;
@@ -67,10 +66,10 @@ var
 begin
   try
     try
-      for I := 0 to ParamCount do
+      for I:= 0 to ParamCount do
         begin
           IDStrings.SplitString(UpperCase(ParamStr(I)), '=', Key, Value);
-          if Parameter = Key then Result := Value;
+          if Parameter = Key then Result:= Value;
         end;
     finally
     end;
@@ -89,10 +88,10 @@ var
 begin
   try
     try
-      for I := 0 to ParamCount do
+      for I:= 0 to ParamCount do
         begin
           if (UpperCase(ParamStr(I)) <> '/GUI') and (UpperCase(ParamStr(I)) <> '/INSTALL') and (UpperCase(ParamStr(I)) <> '/S') and (UpperCase(ParamStr(I)) <> '/UNINSTALL') then
-            ImagePath := Trim(ImagePath + ' ' + ParamStr(I));
+            ImagePath:= Trim(ImagePath + ' ' + ParamStr(I));
         end;
     finally
     end;
@@ -102,7 +101,7 @@ begin
           Log('Exception_GetImagePath', E.ClassName + ' ' + E.Message);
         end
   end;
-  Result := ImagePath;
+  Result:= ImagePath;
 end;
 
 end.

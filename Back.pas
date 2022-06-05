@@ -6,21 +6,19 @@ uses
   System.Classes,
   System.SysUtils,
   System.Win.Registry,
-
-  WinAPI.Windows,
-
   VCL.SvcMgr,
+  WinAPI.Windows,
 
   Core;
 
 type
   TDelphi = class(TService)
+    procedure Service_AfterInstall(Sender: TService);
     procedure Service_Execute(Sender: TService);
     procedure Service_Start(Sender: TService; var Started: Boolean);
     procedure Service_Stop(Sender: TService; var Stopped: Boolean);
     procedure Service_Pause(Sender: TService; var Paused: Boolean);
     procedure Service_Resume(Sender: TService; var Resumed: Boolean);
-    procedure Service_AfterInstall(Sender: TService);
     procedure Service_BeforeUninstall(Sender: TService);
   private
     THR_Back: THR_Core;
@@ -43,33 +41,33 @@ end;
 
 function TDelphi.GetServiceController: TServiceController;
 begin
-  Result := ServiceController;
+  Result:= ServiceController;
 end;
 
 procedure TDelphi.Service_AfterInstall(Sender: TService);
 var
-  Reg: TRegistry;
-  CMD : ANSIString;
+  Registry: TRegistry;
+  CMD: ANSIString;
 begin
-  Reg := TRegistry.Create(KEY_READ or KEY_WRITE);
+  Registry:= TRegistry.Create(KEY_READ or KEY_WRITE);
   try
-    Reg.RootKey := HKEY_LOCAL_MACHINE;
-    if Reg.OpenKey('\SYSTEM\CurrentControlSet\Services\' + Name, False) then
+    Registry.RootKey:= HKEY_LOCAL_MACHINE;
+    if Registry.OpenKey('\SYSTEM\CurrentControlSet\Services\' + Name, False) then
       begin
-        Reg.WriteString('Description', Delphi.Name);
-        Reg.WriteExpandString('ImagePath', ImagePath);
-        Reg.CloseKey;
+        Registry.WriteString('Description', Delphi.Name);
+        Registry.WriteExpandString('ImagePath', ImagePath);
+        Registry.CloseKey;
       end;
   finally
-    Reg.Free;
+    Registry.Free;
   end;
-  CMD := 'CMD.exe /c net start ' + Delphi.Name;
+  CMD:= 'CMD.exe /c net start ' + Delphi.Name;
   WinExec(@CMD[1], SW_Hide);
 end;
 
 procedure TDelphi.Service_BeforeUninstall(Sender: TService);
 var
-  CMD : ANSIString;
+  CMD: ANSIString;
 begin
   CMD :=  'CMD.exe /c net stop ' + Delphi.Name;
   WinExec(@CMD[1], SW_Hide);
@@ -86,9 +84,9 @@ end;
 
 procedure TDelphi.Service_Start(Sender: TService; var Started: Boolean);
 begin
-  THR_Back := THR_Core.Create(True);
+  THR_Back:= THR_Core.Create(True);
   THR_Back.Start;
-  Started := True;
+  Started:= True;
 end;
 
 procedure TDelphi.Service_Stop(Sender: TService; var Stopped: Boolean);
@@ -96,19 +94,19 @@ begin
   THR_Back.Terminate;
   THR_Back.WaitFor;
   FreeAndNil(THR_Back);
-  Stopped := True;
+  Stopped:= True;
 end;
 
 procedure TDelphi.Service_Pause(Sender: TService; var Paused: Boolean);
 begin
   THR_Back.Pause;
-  Paused := True;
+  Paused:= True;
 end;
 
 procedure TDelphi.Service_Resume(Sender: TService; var Resumed: Boolean);
 begin
   THR_Back.Resume;
-  Resumed := True;
+  Resumed:= True;
 end;
 
 end.

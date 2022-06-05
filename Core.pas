@@ -25,12 +25,12 @@ implementation
 
 procedure THR_Core.Execute;
 begin
-  LogParameters;
+  LogParameters();
   try
-    Paused := False;
+    Paused:= False;
 
     if GetParameterValue('/MS') <> '' then MS := GetParameterValue('/MS').ToInteger;
-    if MS = 0 then MS := 1000;
+    if MS = 0 then MS:= 1000;
 
     try
       while not Terminated do
@@ -60,17 +60,17 @@ end;
 
 procedure THR_Core.Pause;
 begin
-  Paused := True;
+  Paused:= True;
 end;
 
 procedure THR_Core.Resume;
 begin
-  Paused := False;
+  Paused:= False;
 end;
 
-function THR_Core.IsPaused: Boolean;
+function THR_COre.IsPaused: Boolean;
 begin
-  Result := Paused;
+  Result:= Paused;
 end;
 
 end.

@@ -5,7 +5,6 @@ interface
 uses
   System.Classes,
   System.SysUtils,
-
   VCL.AppEvnts,
   VCL.Controls,
   VCL.Forms,
@@ -40,10 +39,10 @@ implementation
 
 procedure TDelphi_GUI.ApplicationEventsIdle(Sender: TObject; var Done: Boolean);
 begin
-  BTN_Start.Enabled := not Assigned(THR_Fore);
-  BTN_Stop.Enabled := Assigned(THR_Fore);
-  BTN_Pause.Enabled := Assigned(THR_Fore) and (not THR_Fore.IsPaused);
-  BTN_Resume.Enabled := Assigned(THR_Fore) and THR_Fore.IsPaused;
+  BTN_Start.Enabled:= not Assigned(THR_Fore);
+  BTN_Stop.Enabled:= Assigned(THR_Fore);
+  BTN_Pause.Enabled:= Assigned(THR_Fore) and (not THR_Fore.IsPaused);
+  BTN_Resume.Enabled:= Assigned(THR_Fore) and THR_Fore.IsPaused;
 end;
 
 procedure TDelphi_GUI.FormDestroy(Sender: TObject);
@@ -58,14 +57,14 @@ end;
 
 procedure TDelphi_GUI.BTN_StartClick(Sender: TObject);
 begin
-  THR_Fore := THR_Core.Create(True);
+  THR_Fore:= THR_Core.Create(True);
   THR_Fore.Start;
 end;
 
 procedure TDelphi_GUI.BTN_StopClick(Sender: TObject);
 begin
-  BTN_Pause.Enabled := False;
-  BTN_Resume.Enabled := False;
+  BTN_Pause.Enabled:= False;
+  BTN_Resume.Enabled:= False;
   THR_Fore.Terminate;
   THR_Fore.WaitFor;
   FreeAndNil(THR_Fore);
