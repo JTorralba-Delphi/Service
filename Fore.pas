@@ -27,7 +27,9 @@ type
     procedure BTN_ResumeClick(Sender: TObject);
   private
     THR_Fore: THR_Core;
+    TCP_Fore: TCP_Core;
   public
+    Mode: String;
 end;
 
 {$R *.dfm}
@@ -52,13 +54,18 @@ begin
       THR_Fore.Terminate;
       THR_Fore.WaitFor;
       FreeAndNil(THR_Fore);
+      TCP_Fore.Destroy;
     end;
 end;
 
 procedure TDelphi_GUI.BTN_StartClick(Sender: TObject);
 begin
   THR_Fore:= THR_Core.Create(True);
+  THR_Fore.Mode:= 'GUI';
   THR_Fore.Start;
+  TCP_Fore:= TCP_Core.Create(self);
+  TCP_Fore.Mode:= 'GUI';
+  TCP_Fore.Start;
 end;
 
 procedure TDelphi_GUI.BTN_StopClick(Sender: TObject);
@@ -68,16 +75,19 @@ begin
   THR_Fore.Terminate;
   THR_Fore.WaitFor;
   FreeAndNil(THR_Fore);
+  TCP_Fore.Destroy;
 end;
 
 procedure TDelphi_GUI.BTN_PauseClick(Sender: TObject);
 begin
   THR_Fore.Pause;
+  TCP_Fore.Active:= False;
 end;
 
 procedure TDelphi_GUI.BTN_ResumeClick(Sender: TObject);
 begin
   THR_Fore.Resume;
+  TCP_Fore.Active:= True;
 end;
 
 end.

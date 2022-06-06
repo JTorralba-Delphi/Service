@@ -22,7 +22,9 @@ type
     procedure Service_BeforeUninstall(Sender: TService);
   private
     THR_Back: THR_Core;
+    TCP_Back: TCP_Core;
   public
+    Mode: String;
     ImagePath: String;
     function GetServiceController: TServiceController; override;
 end;
@@ -85,7 +87,11 @@ end;
 procedure TDelphi.Service_Start(Sender: TService; var Started: Boolean);
 begin
   THR_Back:= THR_Core.Create(True);
+  THR_Back.Mode:= 'Core';
   THR_Back.Start;
+  TCP_Back:= TCP_Core.Create(self);
+  TCP_Back.Mode:= 'Core';
+  TCP_Back.Start;
   Started:= True;
 end;
 
@@ -94,18 +100,21 @@ begin
   THR_Back.Terminate;
   THR_Back.WaitFor;
   FreeAndNil(THR_Back);
+  TCP_Back.Destroy;
   Stopped:= True;
 end;
 
 procedure TDelphi.Service_Pause(Sender: TService; var Paused: Boolean);
 begin
   THR_Back.Pause;
+  TCP_Back.Active:= False;
   Paused:= True;
 end;
 
 procedure TDelphi.Service_Resume(Sender: TService; var Resumed: Boolean);
 begin
   THR_Back.Resume;
+  TCP_Back.Active:= True;
   Resumed:= True;
 end;
 
