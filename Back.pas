@@ -21,11 +21,10 @@ type
     procedure Service_Stop(Sender: TService; var Stopped: Boolean);
     procedure Service_BeforeUninstall(Sender: TService);
   private
-    THR_Back: THR_Core;
     TCP_Back: TCP_Core;
+    THR_Back: THR_Core;
   public
     ImagePath: String;
-    Mode: String;
     function GetServiceController: TServiceController; override;
 end;
 
@@ -52,6 +51,7 @@ var
   Registry: TRegistry;
 begin
   Registry:= TRegistry.Create(KEY_READ or KEY_WRITE);
+
   try
     Registry.RootKey:= HKEY_LOCAL_MACHINE;
     if Registry.OpenKey('\SYSTEM\CurrentControlSet\Services\' + Name, False) then
@@ -63,15 +63,8 @@ begin
   finally
     Registry.Free;
   end;
-  CMD:= 'CMD.exe /c net start ' + Delphi.Name;
-  WinExec(@CMD[1], SW_Hide);
-end;
 
-procedure TDelphi.Service_BeforeUninstall(Sender: TService);
-var
-  CMD: ANSIString;
-begin
-  CMD :=  'CMD.exe /c net stop ' + Delphi.Name;
+  CMD:= 'CMD.exe /c net start ' + Delphi.Name;
   WinExec(@CMD[1], SW_Hide);
 end;
 
@@ -86,19 +79,20 @@ end;
 
 procedure TDelphi.Service_Start(Sender: TService; var Started: Boolean);
 begin
-  THR_Back:= THR_Core.Create(True);
-  THR_Back.Mode:= 'Core';
-  THR_Back.Start;
   TCP_Back:= TCP_Core.Create(self);
-  TCP_Back.Mode:= 'Core';
   TCP_Back.Start;
+
+  THR_Back:= THR_Core.Create(True);
+  THR_Back.Start;
+
   Started:= True;
 end;
 
 procedure TDelphi.Service_Resume(Sender: TService; var Resumed: Boolean);
 begin
-  THR_Back.Resume;
   TCP_Back.Active:= True;
+  THR_Back.Resume;
+
   Resumed:= True;
 end;
 
@@ -106,6 +100,7 @@ procedure TDelphi.Service_Pause(Sender: TService; var Paused: Boolean);
 begin
   THR_Back.Pause;
   TCP_Back.Active:= False;
+
   Paused:= True;
 end;
 
@@ -114,8 +109,18 @@ begin
   THR_Back.Terminate;
   THR_Back.WaitFor;
   FreeAndNil(THR_Back);
+
   TCP_Back.Destroy;
+
   Stopped:= True;
+end;
+
+procedure TDelphi.Service_BeforeUninstall(Sender: TService);
+var
+  CMD: ANSIString;
+begin
+  CMD:=  'CMD.exe /c net stop ' + Delphi.Name;
+  WinExec(@CMD[1], SW_Hide);
 end;
 
 end.

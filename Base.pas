@@ -1,10 +1,11 @@
 unit Base;
 
 interface
-  procedure Log(Node: String; Text: String);
+  procedure Log(Data: ANSIString);
   procedure LogParameters();
-  function GetParameterValue(Parameter: String): String;
   function GetImagePath(): String;
+  function GetParameterValue(Parameter: String): String;
+  function Tick(): String;
 
 implementation
 
@@ -14,25 +15,25 @@ uses
   System.IOUtils,
   System.SysUtils;
 
-procedure Log(Node: String; Text: String);
+procedure Log(Data: ANSIString);
 var
   FilePath: String;
   FileName: String;
   FileNode: TStreamWriter;
 begin
   FilePath:= TPath.GetDirectoryName(GetModuleName(HInstance));
-  FileName:= TPath.Combine(FilePath, Node + '.log');
+  FileName:= TPath.Combine(FilePath, 'DEBUG' + '.log');
   FileNode:= TStreamWriter.Create(FileName, True, TEncoding.UTF8);
   try
     try
-      FileNode.WriteLine(FormatDateTime('yyyy-mm-dd hh:nn:ss.zzz', Now) + ' ' + Text);
+      FileNode.WriteLine(Tick() + ' ' + Data);
     finally
       FileNode.Free;
     end;
     except
       on E: Exception do
         begin
-          Log('Exception_Log', E.ClassName + ' ' + E.Message);
+          Log('E: ' + E.ClassName + ' ' + E.Message);
         end
   end;
 end;
@@ -43,40 +44,17 @@ var
 begin
   try
     try
-      Log('Parameters', StringReplace(UpperCase(CMDLine), '  ', ' ', [RFReplaceAll, RFIgnoreCase]));
+      Log(StringReplace(UpperCase(CMDLine), '  ', ' ', [RFReplaceAll, RFIgnoreCase]));
       for I:= 0 to ParamCount do
         begin
-          Log('Parameters', I.ToString + ' ' + UpperCase(ParamStr(I)));
+          Log('S: ' + I.ToString + ' ' + UpperCase(ParamStr(I)));
         end;
     finally
     end;
     except
       on E: Exception do
         begin
-          Log('Exception_LogParameters', E.ClassName + ' ' + E.Message);
-        end
-  end;
-end;
-
-function GetParameterValue(Parameter: String): String;
-var
-  I: Integer;
-  Key: String;
-  Value: String;
-begin
-  try
-    try
-      for I:= 0 to ParamCount do
-        begin
-          IDStrings.SplitString(UpperCase(ParamStr(I)), '=', Key, Value);
-          if Parameter = Key then Result:= Value;
-        end;
-    finally
-    end;
-    except
-      on E: Exception do
-        begin
-          Log('Exception_GetParameterValue', E.ClassName + ' ' + E.Message);
+          Log('E: ' + E.ClassName + ' ' + E.Message);
         end
   end;
 end;
@@ -98,10 +76,38 @@ begin
     except
       on E: Exception do
         begin
-          Log('Exception_GetImagePath', E.ClassName + ' ' + E.Message);
+          Log('E: ' + E.ClassName + ' ' + E.Message);
         end
   end;
   Result:= ImagePath;
+end;
+
+function GetParameterValue(Parameter: String): String;
+var
+  I: Integer;
+  Key: String;
+  Value: String;
+begin
+  try
+    try
+      for I:= 0 to ParamCount do
+        begin
+          IDStrings.SplitString(UpperCase(ParamStr(I)), '=', Key, Value);
+          if Parameter = Key then Result:= Value;
+        end;
+    finally
+    end;
+    except
+      on E: Exception do
+        begin
+          Log('E: ' + E.ClassName + ' ' + E.Message);
+        end
+  end;
+end;
+
+function Tick(): String;
+begin
+  Result:= FormatDateTime('yyyy-mm-dd hh:nn:ss.zzz', Now);
 end;
 
 end.

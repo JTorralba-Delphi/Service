@@ -24,7 +24,7 @@ begin
     begin
       if not VCL.SvcMgr.Application.DelayInitialize or VCL.SvcMgr.Application.Installing then VCL.SvcMgr.Application.Initialize;
       VCL.SvcMgr.Application.CreateForm(TDelphi, Delphi);
-      Delphi.ImagePath:= GetImagePath;
+      Delphi.ImagePath:= GetImagePath();
       VCL.SvcMgr.Application.Run;
     end;
 end.
