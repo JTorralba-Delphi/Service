@@ -83,8 +83,8 @@ end;
 
 function GetImagePath(): String;
 var
-  I: Integer;
   ImagePath: String;
+  I: Integer;
 begin
   try
     try

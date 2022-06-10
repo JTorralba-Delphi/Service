@@ -16,16 +16,16 @@ type
     procedure Service_AfterInstall(Sender: TService);
     procedure Service_Execute(Sender: TService);
     procedure Service_Start(Sender: TService; var Started: Boolean);
-    procedure Service_Stop(Sender: TService; var Stopped: Boolean);
-    procedure Service_Pause(Sender: TService; var Paused: Boolean);
     procedure Service_Resume(Sender: TService; var Resumed: Boolean);
+    procedure Service_Pause(Sender: TService; var Paused: Boolean);
+    procedure Service_Stop(Sender: TService; var Stopped: Boolean);
     procedure Service_BeforeUninstall(Sender: TService);
   private
     THR_Back: THR_Core;
     TCP_Back: TCP_Core;
   public
-    Mode: String;
     ImagePath: String;
+    Mode: String;
     function GetServiceController: TServiceController; override;
 end;
 
@@ -48,8 +48,8 @@ end;
 
 procedure TDelphi.Service_AfterInstall(Sender: TService);
 var
-  Registry: TRegistry;
   CMD: ANSIString;
+  Registry: TRegistry;
 begin
   Registry:= TRegistry.Create(KEY_READ or KEY_WRITE);
   try
@@ -95,13 +95,11 @@ begin
   Started:= True;
 end;
 
-procedure TDelphi.Service_Stop(Sender: TService; var Stopped: Boolean);
+procedure TDelphi.Service_Resume(Sender: TService; var Resumed: Boolean);
 begin
-  THR_Back.Terminate;
-  THR_Back.WaitFor;
-  FreeAndNil(THR_Back);
-  TCP_Back.Destroy;
-  Stopped:= True;
+  THR_Back.Resume;
+  TCP_Back.Active:= True;
+  Resumed:= True;
 end;
 
 procedure TDelphi.Service_Pause(Sender: TService; var Paused: Boolean);
@@ -111,11 +109,13 @@ begin
   Paused:= True;
 end;
 
-procedure TDelphi.Service_Resume(Sender: TService; var Resumed: Boolean);
+procedure TDelphi.Service_Stop(Sender: TService; var Stopped: Boolean);
 begin
-  THR_Back.Resume;
-  TCP_Back.Active:= True;
-  Resumed:= True;
+  THR_Back.Terminate;
+  THR_Back.WaitFor;
+  FreeAndNil(THR_Back);
+  TCP_Back.Destroy;
+  Stopped:= True;
 end;
 
 end.

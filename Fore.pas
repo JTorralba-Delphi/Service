@@ -16,15 +16,15 @@ type
   TDelphi_GUI = class(TForm)
     ApplicationEvents: TApplicationEvents;
     BTN_Start: TButton;
-    BTN_Stop: TButton;
-    BTN_Pause: TButton;
     BTN_Resume: TButton;
+    BTN_Pause: TButton;
+    BTN_Stop: TButton;
     procedure ApplicationEventsIdle(Sender: TObject; var Done: Boolean);
     procedure FormDestroy(Sender: TObject);
     procedure BTN_StartClick(Sender: TObject);
-    procedure BTN_StopClick(Sender: TObject);
-    procedure BTN_PauseClick(Sender: TObject);
     procedure BTN_ResumeClick(Sender: TObject);
+    procedure BTN_PauseClick(Sender: TObject);
+    procedure BTN_StopClick(Sender: TObject);
   private
     THR_Fore: THR_Core;
     TCP_Fore: TCP_Core;
@@ -42,10 +42,10 @@ implementation
 procedure TDelphi_GUI.ApplicationEventsIdle(Sender: TObject; var Done: Boolean);
 begin
   BTN_Start.Enabled:= not Assigned(THR_Fore);
-  BTN_Stop.Enabled:= Assigned(THR_Fore);
-  BTN_Pause.Enabled:= Assigned(THR_Fore) and (not THR_Fore.IsPaused);
   BTN_Resume.Enabled:= Assigned(THR_Fore) and THR_Fore.IsPaused;
-end;
+  BTN_Pause.Enabled:= Assigned(THR_Fore) and (not THR_Fore.IsPaused);
+  BTN_Stop.Enabled:= Assigned(THR_Fore);
+ end;
 
 procedure TDelphi_GUI.FormDestroy(Sender: TObject);
 begin
@@ -68,14 +68,10 @@ begin
   TCP_Fore.Start;
 end;
 
-procedure TDelphi_GUI.BTN_StopClick(Sender: TObject);
+procedure TDelphi_GUI.BTN_ResumeClick(Sender: TObject);
 begin
-  BTN_Pause.Enabled:= False;
-  BTN_Resume.Enabled:= False;
-  THR_Fore.Terminate;
-  THR_Fore.WaitFor;
-  FreeAndNil(THR_Fore);
-  TCP_Fore.Destroy;
+  THR_Fore.Resume;
+  TCP_Fore.Active:= True;
 end;
 
 procedure TDelphi_GUI.BTN_PauseClick(Sender: TObject);
@@ -84,10 +80,14 @@ begin
   TCP_Fore.Active:= False;
 end;
 
-procedure TDelphi_GUI.BTN_ResumeClick(Sender: TObject);
+procedure TDelphi_GUI.BTN_StopClick(Sender: TObject);
 begin
-  THR_Fore.Resume;
-  TCP_Fore.Active:= True;
+  BTN_Pause.Enabled:= False;
+  BTN_Resume.Enabled:= False;
+  THR_Fore.Terminate;
+  THR_Fore.WaitFor;
+  FreeAndNil(THR_Fore);
+  TCP_Fore.Destroy;
 end;
 
 end.

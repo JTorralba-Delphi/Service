@@ -16,8 +16,8 @@ uses
 type
   THR_Core = class(TThread)
   private
-    Paused: Boolean;
     MS: Integer;
+    Paused: Boolean;
   protected
     procedure Execute; override;
   public
@@ -56,7 +56,7 @@ begin
         begin
           if not Paused then
             begin
-              Log(Mode, '.:');
+              Log(Mode, '_:');
             end;
           TThread.Sleep(MS);
         end;
@@ -108,8 +108,6 @@ begin
       Exit;
     end;
   end;
-
-  Log(Mode, '_:');
 end;
 
 procedure TCP_Core.Connect(AContext: TIDContext);
